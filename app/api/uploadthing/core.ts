@@ -2,9 +2,9 @@ import { auth } from "@clerk/nextjs";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 
 import { isTeacher } from "@/lib/teacher";
- 
+
 const f = createUploadthing();
- 
+
 const handleAuth = () => {
   const { userId } = auth();
   const isAuthorized = isTeacher(userId);
@@ -16,13 +16,13 @@ const handleAuth = () => {
 export const ourFileRouter = {
   courseImage: f({ image: { maxFileSize: "4MB", maxFileCount: 1 } })
     .middleware(() => handleAuth())
-    .onUploadComplete(() => {}),
+    .onUploadComplete(() => { }),
   courseAttachment: f(["text", "image", "video", "audio", "pdf"])
     .middleware(() => handleAuth())
-    .onUploadComplete(() => {}),
+    .onUploadComplete(() => { }),
   chapterVideo: f({ video: { maxFileCount: 1, maxFileSize: "512GB" } })
     .middleware(() => handleAuth())
-    .onUploadComplete(() => {})
+    .onUploadComplete(() => { })
 } satisfies FileRouter;
- 
+
 export type OurFileRouter = typeof ourFileRouter;
