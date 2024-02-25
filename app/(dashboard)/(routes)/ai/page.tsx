@@ -15,15 +15,17 @@ interface ConversationProp {
   Question: string;
   Answer: string;
 }
-import { IconArrowRight, IconSearch } from "@tabler/icons-react";
+import { IconArrowRight } from "@tabler/icons-react";
 import { useForm } from "react-hook-form";
-import UserImage from "./_components/userimage";
+import ExampleComponent from "@/components/TypeAnimation/TextAnimation";
 const MODEL_NAME = "gemini-1.0-pro";
 const API_KEY = "AIzaSyApJAP_ZQN8n4HXiUVoIIU1bTYmeqjc1z0";
 export type SearchInputType = z.infer<typeof SearchPrompt>;
 const GeminiAi = () => {
   const [Conversation, setConversation] = useState<ConversationProp[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const acceptresponse = async (data: SearchInputType) => {
+    setIsLoading(true);
     const genAI = new GoogleGenerativeAI(API_KEY);
     const model = genAI.getGenerativeModel({ model: MODEL_NAME });
 
@@ -73,7 +75,7 @@ const GeminiAi = () => {
     });
     const result = await chat.sendMessage(data.search);
     const response = result.response;
-    console.log(response.text());
+    // console.log(response.text());
     setConversation((prev) => [
       ...prev,
       { Question: data.search, Answer: response.text() },
@@ -87,11 +89,15 @@ const GeminiAi = () => {
   } = useForm<SearchInputType>();
   const processForm = (data: SearchInputType) => {
     acceptresponse(data);
+    if (errors.search) {
+      console.log(errors.search);
+    }
     reset();
+    setIsLoading(false);
   };
   return (
     <main className="flex flex-col justify-between h-[90vh]">
-      <div className="h-[500px] pt-1">
+      <div className="h-[85vh] pt-1 overflow-scroll no-scrollbar">
         {Conversation.map((item, index) => {
           return (
             <div key={index}>
@@ -99,7 +105,7 @@ const GeminiAi = () => {
               <div>
                 <div className="flex justify-between">
                   <div className="flex items-center">
-                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-white">
+                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-white dark:text-black">
                       {index + 1}
                     </div>
                     <div className="ml-2 text-lg font-bold">
@@ -107,16 +113,22 @@ const GeminiAi = () => {
                     </div>
                   </div>
                 </div>
-                <div className="flex justify-between">
-                  <div className="flex pt-3">
-                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-white">
-                      <IconArrowRight />
+                {isLoading ? (
+                  <div className="flex items-center justify-center">
+                    <div className="w-8 h-8 border-t-2 border-b-2 border-primary rounded-full animate-spin"></div>
+                  </div>
+                ) : (
+                  <div className="flex">
+                    <div className="flex pt-3">
+                      <div className="flex items-center justify-center w-8 h-8  text-left rounded-full bg-primary text-white dark:text-black">
+                        <IconArrowRight />
+                      </div>
+                    </div>
+                    <div className="ml-2 mt-2 text-lg">
+                      <ExampleComponent Answer={item.Answer} />
                     </div>
                   </div>
-                  <div className="ml-2 mt-2 text-lg font-bold">
-                    {item.Answer}
-                  </div>
-                </div>
+                )}
               </div>
             </div>
           );
