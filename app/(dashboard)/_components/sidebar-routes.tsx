@@ -47,8 +47,8 @@ const guestRoutes = [
   },
   {
     icon: Lightbulb,
-    label: "Idea of the Day",
-    href: "/iotd",
+    label: "AI Lab",
+    href: "/ai",
   },
   // {
   //   icon: FileQuestion,
