@@ -10,6 +10,7 @@ import {
   Lightbulb,
   List,
   MehIcon,
+  Video,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { SidebarItem } from "./sidebar-item";
@@ -55,6 +56,11 @@ const guestRoutes = [
   //   label: "EduQuiz",
   //   href: "https://quizmify.vercel.app",
   // },
+  {
+    icon: Video,
+    label: "Live Class",
+    href: "colab",
+  },
 ];
 
 const teacherRoutes = [

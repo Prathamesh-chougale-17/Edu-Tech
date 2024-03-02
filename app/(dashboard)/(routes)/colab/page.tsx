@@ -1,6 +1,6 @@
 import React from "react";
 import VideoBorder from "./VideoBackground.module.css";
-const TournamentsPage = () => {
+const ColaboratePage = () => {
   return (
     <main className="lg:flex text-2xl  justify-evenly">
       <div>
@@ -22,4 +22,4 @@ const TournamentsPage = () => {
   );
 };
 
-export default TournamentsPage;
+export default ColaboratePage;
